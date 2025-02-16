@@ -30,6 +30,10 @@ public class User {
 
     @Column(name = "COUNTRY")
     private String country;
+    @Column(name="VERIFIED_ACCOUNT")
+    private Boolean verifiedAccount=false;
+    @Column(name="VERIFICATION_CODE")
+    private String verificationCode;
 
     public Long getId() {
         return id;
@@ -101,5 +105,21 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Boolean getVerifiedAccount() {
+        return verifiedAccount;
+    }
+
+    public void setVerifiedAccount(Boolean verifiedAccount) {
+        this.verifiedAccount = verifiedAccount;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }

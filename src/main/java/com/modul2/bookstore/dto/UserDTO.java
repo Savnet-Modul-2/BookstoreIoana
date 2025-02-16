@@ -10,6 +10,8 @@ public class UserDTO {
     private String phoneNumber;
     private String password;
     private String country;
+    private Boolean verifiedAccount=false;
+    private String verificationCode;
 
     public Long getId() {
         return id;
@@ -81,5 +83,21 @@ public class UserDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public Boolean getVerifiedAccount() {
+        return verifiedAccount;
+    }
+
+    public void setVerifiedAccount(Boolean verifiedAccount) {
+        this.verifiedAccount = verifiedAccount;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 }
