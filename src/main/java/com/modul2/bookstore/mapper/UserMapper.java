@@ -16,6 +16,7 @@ public class UserMapper {
         user.setCountry(userDTO.getCountry());
         user.setVerifiedAccount(userDTO.getVerifiedAccount());
         user.setVerificationCode(userDTO.getVerificationCode());
+        user.setVerificationCodeExpiration(userDTO.getVerificationCodeExpiration());
         return user;
     }
 
@@ -32,6 +33,7 @@ public class UserMapper {
         userDTO.setCountry(user.getCountry());
         userDTO.setVerifiedAccount(user.getVerifiedAccount());
         userDTO.setVerificationCode(user.getVerificationCode());
+        userDTO.setVerificationCodeExpiration(user.getVerificationCodeExpiration());
         return userDTO;
     }
 }

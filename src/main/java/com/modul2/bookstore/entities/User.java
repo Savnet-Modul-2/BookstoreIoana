@@ -2,6 +2,8 @@ package com.modul2.bookstore.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity(name = "user")
 @Table(name = "USER", schema = "public")
 public class User {
@@ -34,6 +36,9 @@ public class User {
     private Boolean verifiedAccount=false;
     @Column(name="VERIFICATION_CODE")
     private String verificationCode;
+
+    @Column(name="VERIFICATION_CODE_EXPIRATION")
+    private LocalDateTime verificationCodeExpiration;
 
     public Long getId() {
         return id;
@@ -121,5 +126,13 @@ public class User {
 
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
+    }
+
+    public LocalDateTime getVerificationCodeExpiration() {
+        return verificationCodeExpiration;
+    }
+
+    public void setVerificationCodeExpiration(LocalDateTime verificationCodeExpiration) {
+        this.verificationCodeExpiration = verificationCodeExpiration;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,28 +29,10 @@ public class UserController {
         User createdUser = userService.create(userToCreate);
         return ResponseEntity.ok(UserMapper.user2UserDTO(createdUser));
     }
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyAccount(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String code = request.get("code");
-
-        if (email == null || code == null) {
-            return ResponseEntity.badRequest().body("Email and code are required.");
-        }
-
-        Optional<User> optionalUser = userService.findByEmail(email);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (user.getVerificationCode().equals(code)) {
-                user.setVerifiedAccount(true);
-                user.setVerificationCode(null);
-                userRepository.save(user);
-                return ResponseEntity.ok("Account verified successfully!");
-            }
-            return ResponseEntity.badRequest().body("Invalid verification code.");
-        }
-        return ResponseEntity.badRequest().body("User not found.");
+    @PutMapping("/verify")
+    public ResponseEntity<?> verify(@RequestBody UserDTO updatedUserDTO) {
+        User userToUpdate = UserMapper.userDTO2User(updatedUserDTO);
+        User updatedUser = userService.verify(userToUpdate.getEmail(), userToUpdate.getVerificationCode());
+        return ResponseEntity.ok(UserMapper.user2UserDTO(updatedUser));
     }
-
 }
