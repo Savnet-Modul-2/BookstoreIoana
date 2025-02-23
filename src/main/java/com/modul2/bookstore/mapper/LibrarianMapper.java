@@ -10,10 +10,14 @@ public class LibrarianMapper {
         librarian.setLastName(librarianDTO.getLastName());
         librarian.setEmail(librarianDTO.getEmail());
         librarian.setPassword(librarianDTO.getPassword());
+
+        // Asigurăm că biblioteca nu este null
         librarian.setLibrary(LibraryMapper.libraryDto2Library(librarianDTO.getLibraryDTO()));
+
         librarian.setVerifiedAccount(librarianDTO.getVerifiedAccount());
         librarian.setVerificationCode(librarianDTO.getVerificationCode());
         librarian.setVerificationCodeTimeExpiration(librarianDTO.getVerificationCodeTimeExpiration());
+
         return librarian;
     }
     public static LibrarianDTO librarian2LibrarianDto(Librarian librarian) {

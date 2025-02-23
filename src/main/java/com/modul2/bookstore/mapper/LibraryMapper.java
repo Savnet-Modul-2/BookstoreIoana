@@ -7,6 +7,14 @@ import java.util.ArrayList;
 
 public class LibraryMapper {
     public static Library libraryDto2Library(LibraryDTO libraryDTO) {
+        if (libraryDTO == null) {
+            Library defaultLibrary = new Library();
+            defaultLibrary.setName("Default Library");
+            defaultLibrary.setAddress("Not set");
+            defaultLibrary.setPhoneNumber("Not set");
+            return defaultLibrary;
+        }
+
         Library library = new Library();
         library.setName(libraryDTO.getName());
         library.setAddress(libraryDTO.getAddress());
