@@ -3,6 +3,7 @@ package com.modul2.bookstore.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity(name = "book")
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 public class Book {
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  //genereaza automat id ul
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "TITLE")
@@ -20,7 +21,7 @@ public class Book {
     private String author;
 
     @Column(name = "APPEARANCE_DATE")
-    private LocalDateTime appearanceDate ;
+    private LocalDateTime appearanceDate;
 
     @Column(name = "NR_OF_PAGES")
     private Integer nrOfPages;
@@ -34,6 +35,12 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "library_id")
     private Library library;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "book")
+    private List<Exemplary> exemplars;
 
     public Long getId() {
         return id;
@@ -97,5 +104,18 @@ public class Book {
 
     public void setLibrary(Library library) {
         this.library = library;
+    }
+
+    public List<Exemplary> getExemplars() {
+        return exemplars;
+    }
+
+    public void setExemplars(List<Exemplary> exemplars) {
+        this.exemplars = exemplars;
+    }
+
+    public void addExemplary(Exemplary exemplary) {
+        exemplars.add(exemplary);
+        exemplary.setBook(this);
     }
 }

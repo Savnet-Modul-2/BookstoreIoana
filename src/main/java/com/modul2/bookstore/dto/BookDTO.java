@@ -8,7 +8,7 @@ public class BookDTO {
     private Long id;
     private String title;
     private String author;
-    private LocalDateTime appearanceDate ;
+    private LocalDateTime appearanceDate;
     private Integer nrOfPages;
     private Category category;
     private String language;

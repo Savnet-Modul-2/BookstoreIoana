@@ -36,14 +36,13 @@ public class BookController {
 
     @GetMapping("/paginated")
     public ResponseEntity<?> findAllPaginated(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "title") String sortBy) {
+            @RequestParam(name = "pageSize") int size,
+            @RequestParam(name = "pageNumber") int page) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Book> books = bookService.findAll(pageable);
+        Page<Book> foundBooks = bookService.findAll(PageRequest.of(page, size));
+        Page<BookDTO> bookDtos = foundBooks.map(BookMapper::book2BookDto);
 
-        return ResponseEntity.ok(books.map(BookMapper::book2BookDto));
+        return ResponseEntity.ok(bookDtos);
     }
 
     @GetMapping()

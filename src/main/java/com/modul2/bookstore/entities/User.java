@@ -32,12 +32,12 @@ public class User {
 
     @Column(name = "COUNTRY")
     private String country;
-    @Column(name="VERIFIED_ACCOUNT")
-    private Boolean verifiedAccount=false;
-    @Column(name="VERIFICATION_CODE")
+    @Column(name = "VERIFIED_ACCOUNT")
+    private Boolean verifiedAccount = false;
+    @Column(name = "VERIFICATION_CODE")
     private String verificationCode;
 
-    @Column(name="VERIFICATION_CODE_EXPIRATION")
+    @Column(name = "VERIFICATION_CODE_EXPIRATION")
     private LocalDateTime verificationCodeExpiration;
 
     public Long getId() {

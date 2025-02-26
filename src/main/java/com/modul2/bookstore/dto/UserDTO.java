@@ -12,7 +12,7 @@ public class UserDTO {
     private String phoneNumber;
     private String password;
     private String country;
-    private Boolean verifiedAccount=false;
+    private Boolean verifiedAccount = false;
     private String verificationCode;
     private LocalDateTime verificationCodeExpiration;
 

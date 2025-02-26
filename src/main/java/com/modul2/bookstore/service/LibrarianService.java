@@ -28,14 +28,14 @@ public class LibrarianService {
     private EmailService emailService;
 
     public Librarian create(Librarian librarian) {
-        if (librarian.getId() != null){
+        if (librarian.getId() != null) {
             throw new EntityExistsException("Librarian with the email address %s already exists".formatted(librarian.getEmail()));
         }
 
         String sha256Hex = DigestUtils.sha256Hex(librarian.getPassword()).toUpperCase();
         librarian.setPassword(sha256Hex);
 
-        librarian.setVerificationCode(String.valueOf(new Random().nextInt(10000,99999)));
+        librarian.setVerificationCode(String.valueOf(new Random().nextInt(10000, 99999)));
         librarian.setVerificationCodeTimeExpiration(LocalDateTime.now().plusMinutes(5));
 
         emailService.sendVerificationEmail(librarian.getEmail(), librarian.getVerificationCode());

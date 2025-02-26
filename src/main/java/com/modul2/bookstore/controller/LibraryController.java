@@ -22,6 +22,7 @@ public class LibraryController {
         Library createdLibrary = libraryService.create(libraryToCreate);
         return ResponseEntity.ok(LibraryMapper.library2LibraryDto(createdLibrary));
     }
+
     @GetMapping()
     public ResponseEntity<?> findAll() {
         List<Library> libraryList = libraryService.findAll();

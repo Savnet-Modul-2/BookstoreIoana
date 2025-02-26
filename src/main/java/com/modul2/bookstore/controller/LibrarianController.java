@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class LibrarianController {
     @Autowired
     private LibrarianService librarianService;
+
     @PostMapping()
-    public ResponseEntity<?> create (@RequestBody LibrarianDTO librarianDTO){
+    public ResponseEntity<?> create(@RequestBody LibrarianDTO librarianDTO) {
         Librarian librarianToCreate = LibrarianMapper.librarianDto2Librarian(librarianDTO);
         Librarian createdLibrarian = librarianService.create(librarianToCreate);
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
@@ -24,7 +25,7 @@ public class LibrarianController {
 
     @PutMapping("/verify")
     public ResponseEntity<?> verifyAccount(@RequestBody LibrarianDTO librarianDTO) {
-        Librarian librarianToUpdate=LibrarianMapper.librarianDto2Librarian(librarianDTO);
+        Librarian librarianToUpdate = LibrarianMapper.librarianDto2Librarian(librarianDTO);
         Librarian verifiedLibrarian = librarianService.verifyAccount(librarianToUpdate.getEmail(), librarianToUpdate.getVerificationCode());
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(verifiedLibrarian));
     }
