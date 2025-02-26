@@ -82,7 +82,7 @@ public class Library {
         this.books = books;
     }
 
-    public void addBook(Book book){
+    public void addBook(Book book) {
         this.books.add(book);
         book.setLibrary(this);
     }

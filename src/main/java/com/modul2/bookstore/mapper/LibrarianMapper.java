@@ -20,6 +20,7 @@ public class LibrarianMapper {
 
         return librarian;
     }
+
     public static LibrarianDTO librarian2LibrarianDto(Librarian librarian) {
         LibrarianDTO librarianDTO = new LibrarianDTO();
         librarianDTO.setId(librarian.getId());

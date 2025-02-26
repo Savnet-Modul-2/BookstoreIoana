@@ -14,6 +14,7 @@ public class BookMapper {
         book.setLanguage(bookDTO.getLanguage());
         return book;
     }
+
     public static BookDTO book2BookDto(Book book) {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(book.getId());
@@ -25,5 +26,4 @@ public class BookMapper {
         bookDTO.setLanguage(book.getLanguage());
         return bookDTO;
     }
-
 }
