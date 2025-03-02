@@ -6,9 +6,11 @@ import com.modul2.bookstore.entities.Exemplary;
 import com.modul2.bookstore.mapper.ExemplaryMapper;
 import com.modul2.bookstore.service.ExemplaryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,13 +28,13 @@ public class ExemplaryController {
                 createExemplarsDTO.getCounter()
         );
 
-        List<ExemplaryDTO> exemplarsDto = ExemplaryMapper.toDtoList(exemplars);
+         List<ExemplaryDTO> exemplarsDto = ExemplaryMapper.toDtoList(exemplars);
 
         return ResponseEntity.ok(exemplarsDto);
     }
 
     @GetMapping("/book/{bookId}")
-    public ResponseEntity<List<ExemplaryDTO>> getExemplarsByBook(
+    public ResponseEntity<List<ExemplaryDTO>> getExemplarsByBookId(
             @PathVariable Long bookId,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size) {
@@ -44,6 +46,6 @@ public class ExemplaryController {
     @DeleteMapping("/{exemplaryId}")
     public ResponseEntity<?> deleteExemplary(@PathVariable Long exemplaryId) {
         exemplaryService.delete(exemplaryId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
