@@ -39,10 +39,6 @@ public class BookService {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Book> findAll() {
-        return bookRepository.findAll();
-    }
-
     public Page<Book> findAll(Pageable pageable) {
         return bookRepository.findAll(pageable);
     }
@@ -73,4 +69,7 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    public Page<Book> findBooks(String author, String title, Pageable pageable) {
+        return bookRepository.findBooks(author, title, pageable);
+    }
 }
