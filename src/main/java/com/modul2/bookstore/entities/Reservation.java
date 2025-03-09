@@ -19,7 +19,7 @@ public class Reservation {
     private LocalDate endDate;
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS")
-    private Status status;
+    private ReservationStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -53,11 +53,11 @@ public class Reservation {
         this.endDate = endDate;
     }
 
-    public Status getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 

@@ -17,4 +17,12 @@ public class EmailService {
         message.setText("Codul tau de verificare este: "+code);
         mailSender.send(message);
     }
+    public void sendEmailNotification(String to, String subject, String content) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(content);
+        mailSender.send(message);
+    }
+
 }

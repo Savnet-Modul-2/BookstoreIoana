@@ -1,18 +1,26 @@
 package com.modul2.bookstore.dto;
 
-import com.modul2.bookstore.entities.Exemplary;
-import com.modul2.bookstore.entities.Status;
-import com.modul2.bookstore.entities.User;
+import com.modul2.bookstore.dto.validation.AdvancedValidation;
+import com.modul2.bookstore.dto.validation.BasicValidation;
+import com.modul2.bookstore.dto.validation.ValidDate;
+import com.modul2.bookstore.dto.validation.DateNotInThePast;
+import com.modul2.bookstore.entities.ReservationStatus;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
+@ValidDate(groups = AdvancedValidation.class)
 public class ReservationDTO {
     private Long id;
+    @NotNull(groups = BasicValidation.class)
+    @DateNotInThePast(groups = AdvancedValidation.class)
     private LocalDate startDate;
+    @NotNull(groups = BasicValidation.class)
+    @DateNotInThePast(groups = AdvancedValidation.class)
     private LocalDate endDate;
-    private Status status;
-    private User user;
-    private Exemplary exemplary;
+    private ReservationStatus status;
+    private UserDTO user;
+    private ExemplaryDTO exemplary;
 
     public Long getId() {
         return id;
@@ -38,27 +46,27 @@ public class ReservationDTO {
         this.endDate = endDate;
     }
 
-    public Status getStatus() {
+    public ReservationStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(ReservationStatus status) {
         this.status = status;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
-    public Exemplary getExemplary() {
+    public ExemplaryDTO getExemplary() {
         return exemplary;
     }
 
-    public void setExemplary(Exemplary exemplary) {
+    public void setExemplary(ExemplaryDTO exemplary) {
         this.exemplary = exemplary;
     }
 }

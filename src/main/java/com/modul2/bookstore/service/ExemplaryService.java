@@ -3,20 +3,16 @@ package com.modul2.bookstore.service;
 import com.modul2.bookstore.dto.ExemplaryDTO;
 import com.modul2.bookstore.entities.Book;
 import com.modul2.bookstore.entities.Exemplary;
-import com.modul2.bookstore.entities.Status;
 import com.modul2.bookstore.mapper.ExemplaryMapper;
 import com.modul2.bookstore.repository.BookRepository;
 import com.modul2.bookstore.repository.ExemplaryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ExemplaryService {
