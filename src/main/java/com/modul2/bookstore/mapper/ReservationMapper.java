@@ -9,18 +9,17 @@ public class ReservationMapper {
         reservation.setStartDate(reservationDTO.getStartDate());
         reservation.setEndDate(reservationDTO.getEndDate());
         reservation.setStatus(reservation.getStatus());
-        reservation.setExemplary(reservationDTO.getExemplary());
-        reservation.setUser(reservationDTO.getUser());
         return reservation;
     }
 
     public static ReservationDTO reservation2ReservationDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setId(reservation.getId());
         reservationDTO.setStartDate(reservation.getStartDate());
         reservationDTO.setEndDate(reservation.getEndDate());
         reservationDTO.setStatus(reservation.getStatus());
-        reservationDTO.setExemplary(reservation.getExemplary());
-        reservationDTO.setUser(reservation.getUser());
+        reservationDTO.setExemplary(ExemplaryMapper.exemplary2ExemplaryDto(reservation.getExemplary()));
+        //reservationDTO.setUser(UserMapper.user2UserDTO(reservation.getUser()));
         return reservationDTO;
     }
 }
