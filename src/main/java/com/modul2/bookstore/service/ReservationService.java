@@ -1,5 +1,6 @@
 package com.modul2.bookstore.service;
 
+import com.modul2.bookstore.dto.ReservationsSearchFilterDTO;
 import com.modul2.bookstore.entities.*;
 import com.modul2.bookstore.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -56,12 +58,31 @@ public class ReservationService {
         updateReservation.setStatus(reservationStatus);
         return reservationRepository.save(updateReservation);
     }
-    public Page<Reservation> getReservationsByPeriod(LocalDate startDate, LocalDate endDate, int page, int size) {
+
+    /*public Page<Reservation> getReservationsByPeriod(LocalDate startDate, LocalDate endDate, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "startDate"));
         return reservationRepository.findByStartDateBetween(startDate, endDate, pageRequest);
-    }
-    public Page<Reservation> getReservationsByUser(Long userId, int page, int size) {
+    }*/
+    /*public Page<Reservation> getReservationsByUser(Long userId, List<ReservationStatus> statuses, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "status"));
-        return reservationRepository.findByUserIdOrderByStatus(userId, pageRequest);
+        return reservationRepository.findByUserIdAndStatus(userId, statuses, pageRequest);
+    }*/
+    public Page<Reservation> getReservationsByUser(Long userId, ReservationsSearchFilterDTO reservationsSearchFilterDTO) {
+        PageRequest pageRequest = PageRequest.of(reservationsSearchFilterDTO.getPage(), reservationsSearchFilterDTO.getSize(), Sort.by(Sort.Direction.ASC, "status"));
+        return reservationRepository.searchReservationsByFilterUser(userId,
+                reservationsSearchFilterDTO.getStatuses(),
+                reservationsSearchFilterDTO.getStartDate(),
+                reservationsSearchFilterDTO.getEndDate(),
+                pageRequest);
+    }
+
+    public Page<Reservation> getReservationsByPeriod(Long libraryId, ReservationsSearchFilterDTO reservationsSearchFilterDTO) {
+        PageRequest pageRequest = PageRequest.of(reservationsSearchFilterDTO.getPage(), reservationsSearchFilterDTO.getSize(), Sort.by(Sort.Direction.ASC, "startDate"));
+        return reservationRepository.searchReservationsByFilterLibrary(libraryId,
+                reservationsSearchFilterDTO.getStatuses(),
+                reservationsSearchFilterDTO.getStartDate(),
+                reservationsSearchFilterDTO.getEndDate(),
+                pageRequest
+        );
     }
 }
