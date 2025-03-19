@@ -30,6 +30,12 @@ public class UserController {
         return ResponseEntity.ok(UserMapper.user2UserDTO(createdUser));
     }
 
+    @PostMapping("/resend-verification")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam("email") String email) {
+        User user = userService.resendVerificationCode(email);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/verify")
     public ResponseEntity<?> verify(@RequestBody UserDTO updatedUserDTO) {
         User userToUpdate = UserMapper.userDTO2User(updatedUserDTO);

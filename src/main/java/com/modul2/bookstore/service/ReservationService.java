@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -42,6 +43,7 @@ public class ReservationService {
         reservation.setStatus(ReservationStatus.PENDING);
         reservation.setUser(user);
         reservation.setExemplary(exemplary);
+        exemplary.setUpdateTime(LocalDateTime.now());
 
         return reservationRepository.save(reservation);
     }

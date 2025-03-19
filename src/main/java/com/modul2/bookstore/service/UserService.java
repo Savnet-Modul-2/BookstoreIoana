@@ -36,7 +36,21 @@ public class UserService {
         emailService.sendVerificationEmail(user.getEmail(), verificationCode);
         return savedUser;
     }
+    public User resendVerificationCode(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationTime = user.getVerificationCodeExpiration();
+
+        if (now.isAfter(expirationTime.minusMinutes(1))) {
+            String newVerificationCode = String.valueOf(new Random().nextInt(100000, 999999));
+            user.setVerificationCode(newVerificationCode);
+            user.setVerificationCodeExpiration(now.plusMinutes(5));
+        }
+        emailService.sendVerificationEmail(user.getEmail(), user.getVerificationCode());
+        return userRepository.save(user);
+    }
     public User verify(String email, String verificationCode) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -65,4 +79,5 @@ public class UserService {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email or password");
     }
+
 }

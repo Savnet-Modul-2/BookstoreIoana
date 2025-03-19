@@ -21,6 +21,10 @@ public class Reservation {
     @Column(name = "STATUS")
     private ReservationStatus status;
 
+    @Version
+    @Column(name="version")
+    private Integer version;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
