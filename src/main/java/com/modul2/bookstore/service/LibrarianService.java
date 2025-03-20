@@ -45,7 +45,22 @@ public class LibrarianService {
 
         return librarianRepository.save(librarian);
     }
+    public Librarian resendVerificationCode(String email) {
+        Librarian librarian = librarianRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Librarian not found"));
 
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expirationTime = librarian.getVerificationCodeTimeExpiration();
+
+        if (now.isAfter(expirationTime.minusMinutes(1))) {
+            String newVerificationCode = String.valueOf(new Random().nextInt(100000, 999999));
+            librarian.setVerificationCode(newVerificationCode);
+            librarian.setVerificationCodeTimeExpiration(now.plusMinutes(5));
+        }
+
+        emailService.sendVerificationEmail(librarian.getEmail(), librarian.getVerificationCode());
+        return librarianRepository.save(librarian);
+    }
     public Librarian verifyAccount(String email, String verificationCode) {
         Librarian librarian = librarianRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Librarian not found"));

@@ -22,7 +22,6 @@ public class LibrarianController {
         Librarian createdLibrarian = librarianService.create(librarianToCreate);
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
     }
-
     @PutMapping("/verify")
     public ResponseEntity<?> verifyAccount(@RequestBody LibrarianDTO librarianDTO) {
         Librarian librarianToUpdate = LibrarianMapper.librarianDto2Librarian(librarianDTO);
