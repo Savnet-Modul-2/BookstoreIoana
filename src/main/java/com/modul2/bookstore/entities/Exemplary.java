@@ -2,6 +2,7 @@ package com.modul2.bookstore.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,13 @@ public class Exemplary {
 
     @Column(name = "MAX_REZERVATION_DAYS")
     private Integer maxRezervationDays;
+
+    @Version
+    @Column(name="version")
+    private Integer version;
+
+    @Column(name="update_time")
+    private LocalDateTime updateTime;
 
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
@@ -59,5 +67,13 @@ public class Exemplary {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
     }
 }
