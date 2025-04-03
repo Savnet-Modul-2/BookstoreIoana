@@ -19,9 +19,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByStatusAndEndDate(ReservationStatus status, LocalDate endDate);
 
-    //Page<Reservation> findByStartDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
-
-    //Page<Reservation> findByUserIdAndStatus(Long userId, List<ReservationStatus> statuses, Pageable pageable);
     @Query("SELECT r FROM reservation r " +
             "WHERE r.user.id = :userId " +
             "AND (:statuses IS NULL OR r.status IN :statuses) " +

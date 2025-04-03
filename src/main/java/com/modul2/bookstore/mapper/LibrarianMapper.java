@@ -11,8 +11,12 @@ public class LibrarianMapper {
         librarian.setEmail(librarianDTO.getEmail());
         librarian.setPassword(librarianDTO.getPassword());
 
-        // Asigurăm că biblioteca nu este null
-        librarian.setLibrary(LibraryMapper.libraryDto2Library(librarianDTO.getLibraryDTO()));
+        // Adăugăm protecție: verificăm dacă libraryDTO este null
+        if (librarianDTO.getLibraryDTO() != null) {
+            librarian.setLibrary(LibraryMapper.libraryDto2Library(librarianDTO.getLibraryDTO()));
+        } else {
+            librarian.setLibrary(null);
+        }
 
         librarian.setVerifiedAccount(librarianDTO.getVerifiedAccount());
         librarian.setVerificationCode(librarianDTO.getVerificationCode());
@@ -20,6 +24,7 @@ public class LibrarianMapper {
 
         return librarian;
     }
+
 
     public static LibrarianDTO librarian2LibrarianDto(Librarian librarian) {
         LibrarianDTO librarianDTO = new LibrarianDTO();

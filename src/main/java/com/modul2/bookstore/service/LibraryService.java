@@ -1,6 +1,5 @@
 package com.modul2.bookstore.service;
 
-import com.modul2.bookstore.entities.Book;
 import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.repository.LibraryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

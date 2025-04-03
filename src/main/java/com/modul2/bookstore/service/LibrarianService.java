@@ -2,9 +2,6 @@ package com.modul2.bookstore.service;
 
 import com.modul2.bookstore.entities.Librarian;
 import com.modul2.bookstore.entities.Library;
-import com.modul2.bookstore.entities.User;
-import com.modul2.bookstore.mapper.LibrarianMapper;
-import com.modul2.bookstore.mapper.LibraryMapper;
 import com.modul2.bookstore.repository.LibrarianRepository;
 import com.modul2.bookstore.repository.LibraryRepository;
 import jakarta.persistence.EntityExistsException;
@@ -42,9 +39,11 @@ public class LibrarianService {
 
         Library savedLibrary = libraryRepository.save(librarian.getLibrary());
         librarian.setLibrary(savedLibrary);
+        savedLibrary.setLibrarian(librarian);
 
         return librarianRepository.save(librarian);
     }
+
     public Librarian resendVerificationCode(String email) {
         Librarian librarian = librarianRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Librarian not found"));
@@ -61,22 +60,22 @@ public class LibrarianService {
         emailService.sendVerificationEmail(librarian.getEmail(), librarian.getVerificationCode());
         return librarianRepository.save(librarian);
     }
+
     public Librarian verifyAccount(String email, String verificationCode) {
         Librarian librarian = librarianRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Librarian not found"));
+                .orElseThrow(() -> new RuntimeException("Librarian not found"));
 
-        if (librarian.getVerificationCodeTimeExpiration() != null &&
-                LocalDateTime.now().isAfter(librarian.getVerificationCodeTimeExpiration())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Verification code has expired");
+        if (librarian.getVerificationCodeTimeExpiration().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("The verification code has expired.");
         }
 
         if (!librarian.getVerificationCode().equals(verificationCode)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid verification code");
+            throw new RuntimeException("Invalid verification code.");
         }
 
-        librarian.setVerifiedAccount(true);
         librarian.setVerificationCode(null);
         librarian.setVerificationCodeTimeExpiration(null);
+        librarian.setVerifiedAccount(true);
         return librarianRepository.save(librarian);
     }
 

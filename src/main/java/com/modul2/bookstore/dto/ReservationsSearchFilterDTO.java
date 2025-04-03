@@ -1,14 +1,20 @@
 package com.modul2.bookstore.dto;
 
+import com.modul2.bookstore.dto.validation.AdvancedValidation;
+import com.modul2.bookstore.dto.validation.BasicValidation;
+import com.modul2.bookstore.dto.validation.ValidDate;
 import com.modul2.bookstore.entities.ReservationStatus;
-import org.springframework.data.domain.Pageable;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@ValidDate(groups = AdvancedValidation.class)
 public class ReservationsSearchFilterDTO {
-    private List<ReservationStatus>statuses;
+    private List<ReservationStatus> statuses;
+    @NotNull(groups = BasicValidation.class)
     private LocalDate startDate;
+    @NotNull(groups = BasicValidation.class)
     private LocalDate endDate;
     private Integer page;
     private Integer size;

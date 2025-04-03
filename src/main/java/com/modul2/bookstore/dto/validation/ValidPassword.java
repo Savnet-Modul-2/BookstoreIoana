@@ -9,12 +9,11 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-
-@Constraint(validatedBy = { DateValidator.class})
-@Target(ElementType.TYPE)//poate si aplicat doar pe o clasa/interfata
+@Constraint(validatedBy = {PasswordValidator.class})
+@Target(ElementType.FIELD)
 @Retention(RUNTIME)
-public @interface ValidDate {
-    String message() default "The start date must be less than the end date";
+public @interface ValidPassword {
+    String message() default "Not enough characters. It has to be at least 6 characters long";
 
     Class<?>[] groups() default {};
 

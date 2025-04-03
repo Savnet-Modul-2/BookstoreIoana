@@ -10,11 +10,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 
-@Constraint(validatedBy = { DateValidator.class})
-@Target(ElementType.TYPE)//poate si aplicat doar pe o clasa/interfata
+@Constraint(validatedBy = {PhoneNumberValidator.class})
+@Target(ElementType.FIELD)
 @Retention(RUNTIME)
-public @interface ValidDate {
-    String message() default "The start date must be less than the end date";
+public @interface ValidPhoneNumber {
+    String message() default "Wrong phone number";
 
     Class<?>[] groups() default {};
 

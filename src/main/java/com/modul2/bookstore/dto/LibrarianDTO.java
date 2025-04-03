@@ -84,4 +84,5 @@ public class LibrarianDTO {
     public void setVerificationCodeTimeExpiration(LocalDateTime verificationCodeTimeExpiration) {
         this.verificationCodeTimeExpiration = verificationCodeTimeExpiration;
     }
+
 }

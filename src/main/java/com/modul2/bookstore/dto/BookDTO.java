@@ -1,17 +1,22 @@
 package com.modul2.bookstore.dto;
 
+import com.modul2.bookstore.dto.validation.BasicValidation;
 import com.modul2.bookstore.entities.Category;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
 public class BookDTO {
     private Long id;
+    @NotNull(groups = BasicValidation.class)
     private String title;
+    @NotNull(groups = BasicValidation.class)
     private String author;
     private LocalDateTime appearanceDate;
     private Integer nrOfPages;
     private Category category;
     private String language;
+    private LibraryDTO library;
 
     public Long getId() {
         return id;
@@ -67,5 +72,13 @@ public class BookDTO {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public LibraryDTO getLibrary() {
+        return library;
+    }
+
+    public void setLibrary(LibraryDTO library) {
+        this.library = library;
     }
 }

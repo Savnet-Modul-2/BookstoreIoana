@@ -5,7 +5,6 @@ import com.modul2.bookstore.dto.ReservationsSearchFilterDTO;
 import com.modul2.bookstore.dto.UpdateReservationStatusDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
 import com.modul2.bookstore.entities.Reservation;
-import com.modul2.bookstore.entities.ReservationStatus;
 import com.modul2.bookstore.mapper.ReservationMapper;
 import com.modul2.bookstore.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")

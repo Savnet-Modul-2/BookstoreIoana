@@ -2,8 +2,6 @@ package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.LibrarianDTO;
 import com.modul2.bookstore.entities.Librarian;
-import com.modul2.bookstore.entities.User;
-import com.modul2.bookstore.mapper.UserMapper;
 import com.modul2.bookstore.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +20,13 @@ public class LibrarianController {
         Librarian createdLibrarian = librarianService.create(librarianToCreate);
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
     }
+
+    @PostMapping("/resend-verification")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam("email") String email) {
+        Librarian librarian = librarianService.resendVerificationCode(email);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/verify")
     public ResponseEntity<?> verifyAccount(@RequestBody LibrarianDTO librarianDTO) {
         Librarian librarianToUpdate = LibrarianMapper.librarianDto2Librarian(librarianDTO);

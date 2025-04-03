@@ -9,6 +9,9 @@ public class ReservationMapper {
         reservation.setStartDate(reservationDTO.getStartDate());
         reservation.setEndDate(reservationDTO.getEndDate());
         reservation.setStatus(reservation.getStatus());
+        if (reservationDTO.getUser() != null) {
+            reservation.setUser(UserMapper.userDTO2User(reservationDTO.getUser()));
+        }
         return reservation;
     }
 
@@ -19,7 +22,9 @@ public class ReservationMapper {
         reservationDTO.setEndDate(reservation.getEndDate());
         reservationDTO.setStatus(reservation.getStatus());
         reservationDTO.setExemplary(ExemplaryMapper.exemplary2ExemplaryDto(reservation.getExemplary()));
-        //reservationDTO.setUser(UserMapper.user2UserDTO(reservation.getUser()));
+        if (reservation.getUser() != null) {
+            reservationDTO.setUser(UserMapper.user2UserDTO(reservation.getUser()));
+        }
         return reservationDTO;
     }
 }

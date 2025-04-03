@@ -6,11 +6,9 @@ import com.modul2.bookstore.entities.Exemplary;
 import com.modul2.bookstore.mapper.ExemplaryMapper;
 import com.modul2.bookstore.service.ExemplaryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
