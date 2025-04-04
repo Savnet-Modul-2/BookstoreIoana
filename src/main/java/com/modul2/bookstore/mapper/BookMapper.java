@@ -12,8 +12,8 @@ public class BookMapper {
         book.setNrOfPages(bookDTO.getNrOfPages());
         book.setCategory(bookDTO.getCategory());
         book.setLanguage(bookDTO.getLanguage());
-        if (bookDTO.getLibrary() != null) {
-            book.setLibrary(LibraryMapper.libraryDto2Library(bookDTO.getLibrary()));
+        if (bookDTO.getLibraryDTO() != null) {
+            book.setLibrary(LibraryMapper.libraryDto2Library(bookDTO.getLibraryDTO()));
         }
         return book;
     }
@@ -28,7 +28,7 @@ public class BookMapper {
         bookDTO.setCategory(book.getCategory());
         bookDTO.setLanguage(book.getLanguage());
         if (book.getLibrary() != null) {
-            bookDTO.setLibrary(LibraryMapper.library2LibraryDto(book.getLibrary()));
+            bookDTO.setLibraryDTO(LibraryMapper.library2LibraryDto(book.getLibrary()));
         }
         return bookDTO;
     }

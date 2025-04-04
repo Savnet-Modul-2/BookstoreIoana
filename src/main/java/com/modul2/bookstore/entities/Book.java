@@ -13,29 +13,21 @@ public class Book {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "TITLE")
     private String title;
-
     @Column(name = "AUTHOR")
     private String author;
-
     @Column(name = "APPEARANCE_DATE")
     private LocalDateTime appearanceDate;
-
     @Column(name = "NR_OF_PAGES")
     private Integer nrOfPages;
-
     @Enumerated(EnumType.STRING)
     private Category category;
-
     @Column(name = "LANGUAGE")
     private String language;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "library_id")
     private Library library;
-
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
             fetch = FetchType.LAZY,
             orphanRemoval = true,
@@ -74,11 +66,11 @@ public class Book {
         this.appearanceDate = appearanceDate;
     }
 
-    public Integer getNrOfPages() {
+    public int getNrOfPages() {
         return nrOfPages;
     }
 
-    public void setNrOfPages(Integer nrOfPages) {
+    public void setNrOfPages(int nrOfPages) {
         this.nrOfPages = nrOfPages;
     }
 
@@ -113,9 +105,9 @@ public class Book {
     public void setExemplars(List<Exemplary> exemplars) {
         this.exemplars = exemplars;
     }
-
     public void addExemplary(Exemplary exemplary) {
         exemplars.add(exemplary);
         exemplary.setBook(this);
     }
+
 }

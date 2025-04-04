@@ -17,7 +17,6 @@ public class LibraryDTO {
     @NotNull(groups = BasicValidation.class)
     @ValidPhoneNumber(groups = AdvancedValidation.class)
     private String phoneNumber;
-    private List<BookDTO> books = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,13 +48,5 @@ public class LibraryDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<BookDTO> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookDTO> books) {
-        this.books = books;
     }
 }

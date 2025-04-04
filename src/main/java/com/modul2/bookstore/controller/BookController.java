@@ -15,20 +15,42 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/books")
 public class BookController {
     @Autowired
-    private BookService bookService;
+    BookService bookService;
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody BookDTO bookDto) {
-        Book bookToCreate = BookMapper.bookDto2Book(bookDto);
+    public ResponseEntity<?> create(@RequestBody BookDTO bookDTO) {
+        Book bookToCreate = BookMapper.bookDto2Book(bookDTO);
         Book createdBook = bookService.create(bookToCreate);
         return ResponseEntity.ok(BookMapper.book2BookDto(createdBook));
     }
 
     @PostMapping("/library/{libraryId}")
-    public ResponseEntity<?> create(@PathVariable Long libraryId, @RequestBody BookDTO bookDTO) {
+    public ResponseEntity<?> createBookToLibrary(@RequestBody BookDTO bookDTO,
+                                                 @PathVariable Long libraryId) {
         Book bookToCreate = BookMapper.bookDto2Book(bookDTO);
-        Book createdBook = bookService.create(libraryId, bookToCreate);
+        Book createdBook = bookService.create(bookToCreate, libraryId);
         return ResponseEntity.ok(BookMapper.book2BookDto(createdBook));
+    }
+
+    @PutMapping("/remove/{bookId}/from/{libraryId}")
+    public ResponseEntity<?> removeBookFromLibrary(@PathVariable Long bookId,
+                                                   @PathVariable Long libraryId) {
+        bookService.removeBookFromLibrary(bookId, libraryId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{bookId}")
+    public ResponseEntity<?> getBookById(@PathVariable Long bookId) {
+        Book book = bookService.getBookById(bookId);
+        return ResponseEntity.ok(BookMapper.book2BookDto(book));
+    }
+
+    @PutMapping("/{bookId}")
+    public ResponseEntity<?> updateBook(@PathVariable Long bookId,
+                                        @RequestBody BookDTO updateModelBookDTO) {
+        Book updateModelBook = BookMapper.bookDto2Book(updateModelBookDTO);
+        Book bookToUpdate = bookService.updateBook(bookId, updateModelBook);
+        return ResponseEntity.ok(BookMapper.book2BookDto(bookToUpdate));
     }
 
     @GetMapping("/paginated")
@@ -36,35 +58,10 @@ public class BookController {
             @RequestParam(name = "pageSize") int size,
             @RequestParam(name = "pageNumber") int page) {
 
-        Page<Book> foundBooks = bookService.findAll(PageRequest.of(page, size));
+        Page<Book> foundBooks = bookService.getAllBooksPaginated(PageRequest.of(page, size));
         Page<BookDTO> bookDtos = foundBooks.map(BookMapper::book2BookDto);
 
         return ResponseEntity.ok(bookDtos);
-    }
-
-    @GetMapping("/{bookId}")
-    public ResponseEntity<?> getById(@PathVariable Long bookId) {
-        Book book = bookService.getById(bookId);
-        return ResponseEntity.ok(BookMapper.book2BookDto(book));
-    }
-
-    @DeleteMapping("/{bookId}")
-    public ResponseEntity<?> deleteById(@PathVariable(name = "bookId") Long bookIdToDelete) {
-        bookService.deleteById(bookIdToDelete);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{bookId}")
-    public ResponseEntity<?> updateById(@PathVariable(name = "bookId") Long bookIdToUpdate, @RequestBody BookDTO bookBody) {
-        Book bookEntity = BookMapper.bookDto2Book(bookBody);
-        Book updatedBook = bookService.updateById(bookIdToUpdate, bookEntity);
-        return ResponseEntity.ok(BookMapper.book2BookDto(updatedBook));
-    }
-
-    @DeleteMapping("/{bookId}/library")
-    public ResponseEntity<?> removeFromLibrary(@PathVariable Long bookId) {
-        bookService.removeFromLibrary(bookId);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/paginated-search")

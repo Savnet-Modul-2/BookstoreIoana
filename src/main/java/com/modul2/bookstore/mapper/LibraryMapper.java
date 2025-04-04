@@ -5,9 +5,6 @@ import com.modul2.bookstore.entities.Library;
 
 public class LibraryMapper {
     public static Library libraryDto2Library(LibraryDTO libraryDTO) {
-        if (libraryDTO == null) {
-            return null;
-        }
         Library library = new Library();
         library.setName(libraryDTO.getName());
         library.setAddress(libraryDTO.getAddress());

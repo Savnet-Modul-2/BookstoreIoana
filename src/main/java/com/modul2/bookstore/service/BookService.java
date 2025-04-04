@@ -5,6 +5,7 @@ import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.repository.BookRepository;
 import com.modul2.bookstore.repository.LibraryRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,39 +15,54 @@ import org.springframework.stereotype.Service;
 @Service
 public class BookService {
     @Autowired
-    private BookRepository bookRepository;
+    BookRepository bookRepository;
+
     @Autowired
-    private LibraryRepository libraryRepository;
+    LibraryRepository libraryRepository;
 
-    public Book create(Book book) {
-        if (book.getId() != null) {
-            throw new RuntimeException("You cannot provide an ID to a new application that you want to create");
+    public Book create(Book bookToCreate) {
+        if (bookToCreate.getId() != null) {
+            throw new RuntimeException("The book already exists");
         }
-        return bookRepository.save(book);
+        return bookRepository.save(bookToCreate);
     }
 
-    public Book create(Long libraryId, Book book) {
+    @Transactional
+    public Book create(Book bookToCreate, Long libraryId) {
+        if (bookToCreate.getId() != null) {
+            throw new RuntimeException("The book already exists");
+        }
         Library library = libraryRepository.findById(libraryId)
-                .orElseThrow(() -> new EntityNotFoundException("Library not found"));
+                .orElseThrow(() -> new RuntimeException("This library doesn't exist"));
 
-        book.setLibrary(library);
-        return bookRepository.save(book);
+        library.addBook(bookToCreate);
+        return bookRepository.save(bookToCreate);
     }
 
-    public Book getById(Long bookIdToSearchFor) {
-        return bookRepository.findById(bookIdToSearchFor)
-                .orElseThrow(EntityNotFoundException::new);
+    @Transactional
+    public void removeBookFromLibrary(Long bookId, Long libraryId) {
+        Book bookToRemove = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("This book was not found"));
+
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(() -> new EntityNotFoundException("This library was not found"));
+
+        //library.removeBook(bookToRemove);--asta sterge cartea cu totul
+        bookToRemove.setLibrary(null);
+        bookRepository.save(bookToRemove);
     }
 
-    public Page<Book> findAll(Pageable pageable) {
+    public Page<Book> getAllBooksPaginated(Pageable pageable) {
         return bookRepository.findAll(pageable);
     }
 
-    public void deleteById(Long bookIdToDelete) {
-        bookRepository.deleteById(bookIdToDelete);
+    public Book getBookById(Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new EntityNotFoundException("This book was not found"));
+        return book;
     }
 
-    public Book updateById(Long bookIdToUpdate, Book bookEntity) {
+    public Book updateBook(Long bookIdToUpdate, Book bookEntity) {
         Book updatedBook = bookRepository.findById(bookIdToUpdate)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -58,14 +74,6 @@ public class BookService {
         updatedBook.setLanguage(bookEntity.getLanguage());
 
         return bookRepository.save(updatedBook);
-    }
-
-    public void removeFromLibrary(Long bookId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
-
-        book.setLibrary(null);
-        bookRepository.save(book);
     }
 
     public Page<Book> findBooks(String author, String title, Pageable pageable) {

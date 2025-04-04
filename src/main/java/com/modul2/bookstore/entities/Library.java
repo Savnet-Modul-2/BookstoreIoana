@@ -29,7 +29,7 @@ public class Library {
     private Librarian librarian;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             orphanRemoval = true,
             mappedBy = "library")
     private List<Book> books = new ArrayList<>();
@@ -85,5 +85,9 @@ public class Library {
     public void addBook(Book book) {
         this.books.add(book);
         book.setLibrary(this);
+    }
+    public void removeBook(Book book){
+        this.books.remove(book);
+        book.setLibrary(null);
     }
 }

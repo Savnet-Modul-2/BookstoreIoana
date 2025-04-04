@@ -1,11 +1,13 @@
 package com.modul2.bookstore.controller;
 
 import com.modul2.bookstore.dto.LibrarianDTO;
+import com.modul2.bookstore.dto.validation.BasicValidation;
 import com.modul2.bookstore.entities.Librarian;
 import com.modul2.bookstore.service.LibrarianService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.modul2.bookstore.mapper.LibrarianMapper;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,7 +17,8 @@ public class LibrarianController {
     private LibrarianService librarianService;
 
     @PostMapping()
-    public ResponseEntity<?> create(@RequestBody LibrarianDTO librarianDTO) {
+    public ResponseEntity<?> create(@Validated(BasicValidation.class)
+                                    @RequestBody LibrarianDTO librarianDTO) {
         Librarian librarianToCreate = LibrarianMapper.librarianDto2Librarian(librarianDTO);
         Librarian createdLibrarian = librarianService.create(librarianToCreate);
         return ResponseEntity.ok(LibrarianMapper.librarian2LibrarianDto(createdLibrarian));
