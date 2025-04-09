@@ -8,6 +8,7 @@ import com.modul2.bookstore.repository.BookRepository;
 import com.modul2.bookstore.repository.ExemplaryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -32,22 +33,16 @@ public class ExemplaryService {
             Exemplary exemplary = new Exemplary();
             exemplary.setPublisher(publisher);
             exemplary.setMaxRezervationDays(maxReservationDays);
-            book.addExemplary(exemplary);
+            //relatie many to one
+            book.addExemplary(exemplary); //adaugam fiecare exemplar in lista de exemplare din carti
             exemplars.add(exemplary);
         }
 
         return exemplaryRepository.saveAll(exemplars);
     }
 
-    public List<ExemplaryDTO> findByBookId(Long bookId, Integer page, Integer size) {
-        if (page != null && size != null && page >= 0 && size > 0) {
-            return exemplaryRepository.findByBookId(bookId, PageRequest.of(page, size)).stream()
-                    .map(ExemplaryMapper::exemplary2ExemplaryDto)
-                    .toList();
-        }
-        return exemplaryRepository.findByBookId(bookId).stream()
-                .map(ExemplaryMapper::exemplary2ExemplaryDto)
-                .toList();
+    public Page<Exemplary> findByBookId(Long bookId, Integer page, Integer size) {
+        return exemplaryRepository.findByBookId(bookId, PageRequest.of(page, size));
     }
 
     public void delete(Long exemplaryId) {

@@ -74,7 +74,7 @@ public class BookController {
         int pageSize = (size != null) ? size : 10; // Valoare implicită
         int pageNumber = (page != null) ? page : 0; // Valoare implicită
 
-        Page<Book> foundBooks = bookService.findBooks(author, title, PageRequest.of(page, size));
+        Page<Book> foundBooks = bookService.findBooks(author, title, PageRequest.of(pageNumber, pageSize));
         Page<BookDTO> bookDtos = foundBooks.map(BookMapper::book2BookDto);
 
         return ResponseEntity.ok(bookDtos);

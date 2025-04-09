@@ -143,4 +143,14 @@ public class User {
     public void setVerificationCodeExpiration(LocalDateTime verificationCodeExpiration) {
         this.verificationCodeExpiration = verificationCodeExpiration;
     }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+        reservation.setUser(this);
+    }
+
+    public void removeReservation(Reservation reservation) {
+        this.reservations.remove(reservation);
+        reservation.setUser(null);
+    }
 }

@@ -35,7 +35,7 @@ public class BookService {
         Library library = libraryRepository.findById(libraryId)
                 .orElseThrow(() -> new RuntimeException("This library doesn't exist"));
 
-        library.addBook(bookToCreate);
+        library.addBook(bookToCreate); //adaugam copilul in lista de copii a parintelui
         return bookRepository.save(bookToCreate);
     }
 
@@ -48,7 +48,7 @@ public class BookService {
                 .orElseThrow(() -> new EntityNotFoundException("This library was not found"));
 
         //library.removeBook(bookToRemove);--asta sterge cartea cu totul
-        bookToRemove.setLibrary(null);
+        bookToRemove.setLibrary(null); //--asta doar elimina cartea din lista de carti a librariei
         bookRepository.save(bookToRemove);
     }
 

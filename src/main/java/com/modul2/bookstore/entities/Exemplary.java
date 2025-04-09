@@ -21,10 +21,10 @@ public class Exemplary {
     private Integer maxRezervationDays;
 
     @Version
-    @Column(name="version")
+    @Column(name = "version")
     private Integer version;
 
-    @Column(name="update_time")
+    @Column(name = "update_time")
     private LocalDateTime updateTime;
 
     @ManyToOne
@@ -75,5 +75,10 @@ public class Exemplary {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public void addReservation(Reservation reservation) {
+        this.reservations.add(reservation);
+        reservation.setExemplary(this);
     }
 }
