@@ -37,7 +37,7 @@ public class ReservationController {
     }
 
     @GetMapping("/library/{libraryId}")
-    public ResponseEntity<Page<ReservationDTO>> getReservations(
+    public ResponseEntity<Page<ReservationDTO>> getReservationsByLibrary(
             @PathVariable Long libraryId,
             @RequestBody ReservationsSearchFilterDTO reservationsSearchFilterDTO) {
 

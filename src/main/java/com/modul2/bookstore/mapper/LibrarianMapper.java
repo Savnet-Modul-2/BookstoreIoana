@@ -11,11 +11,8 @@ public class LibrarianMapper {
         librarian.setEmail(librarianDTO.getEmail());
         librarian.setPassword(librarianDTO.getPassword());
 
-        // Adăugăm protecție: verificăm dacă libraryDTO este null
         if (librarianDTO.getLibraryDTO() != null) {
             librarian.setLibrary(LibraryMapper.libraryDto2Library(librarianDTO.getLibraryDTO()));
-        } else {
-            librarian.setLibrary(null);
         }
 
         librarian.setVerifiedAccount(librarianDTO.getVerifiedAccount());
@@ -34,6 +31,11 @@ public class LibrarianMapper {
         librarianDTO.setEmail(librarian.getEmail());
         librarianDTO.setPassword(librarian.getPassword());
         librarianDTO.setLibraryDTO(LibraryMapper.library2LibraryDto(librarian.getLibrary()));
+
+        if (librarian.getLibrary() != null) {
+            librarianDTO.setLibraryDTO(LibraryMapper.library2LibraryDto(librarian.getLibrary()));
+        }
+
         librarianDTO.setVerifiedAccount(librarian.getVerifiedAccount());
         librarianDTO.setVerificationCode(librarian.getVerificationCode());
         librarianDTO.setVerificationCodeTimeExpiration(librarian.getVerificationCodeTimeExpiration());

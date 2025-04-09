@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
@@ -38,35 +39,43 @@ public class ReservationService {
                 .findFirstAvailableExemplary(bookId, reservation.getStartDate(), reservation.getEndDate())
                 .orElseThrow(() -> new IllegalStateException("No available exemplaries in the period."));
 
+        long daysBetween = Duration.between(
+                reservation.getStartDate().atStartOfDay(),
+                reservation.getEndDate().atStartOfDay()
+        ).toDays();
+
+        if (daysBetween > exemplary.getMaxRezervationDays()) {
+            throw new UnsupportedOperationException("Reservation too long");
+        }
+
         reservation.setStatus(ReservationStatus.PENDING);
-        reservation.setUser(user);
-        reservation.setExemplary(exemplary);
+        reservation.setUser(user); //in copil setam parintele
+        reservation.setExemplary(exemplary); //in copil setam parintele
         exemplary.setUpdateTime(LocalDateTime.now());
+
+        exemplaryRepository.save(exemplary);
 
         return reservationRepository.save(reservation);
     }
 
     public Reservation updateStatus(Long librarianId, Long reservationId, ReservationStatus reservationStatus) {
-        Reservation updateReservation = reservationRepository.findById(reservationId).orElseThrow(() -> new EntityNotFoundException("Book not found"));
-        Librarian librarian = librarianRepository.findById(librarianId).orElseThrow(() -> new EntityNotFoundException("Librarian not found"));
-        if (updateReservation.getStatus().isNextStatePossible(reservationStatus)) {
-            throw new IllegalStateException("Reservation not found");
+        Reservation updateReservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+
+        Librarian librarian = librarianRepository.findById(librarianId)
+                .orElseThrow(() -> new EntityNotFoundException("Librarian not found"));
+
+        if (!updateReservation.getStatus().isNextStatePossible(reservationStatus)) {
+            throw new IllegalStateException("Cannot update status of reservation");
         }
+
         if (!librarian.getLibrary().equals(updateReservation.getExemplary().getBook().getLibrary())) {
             throw new IllegalStateException("Librarian does not have permission to update this reservation");
         }
+
         updateReservation.setStatus(reservationStatus);
         return reservationRepository.save(updateReservation);
     }
-
-    /*public Page<Reservation> getReservationsByPeriod(LocalDate startDate, LocalDate endDate, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "startDate"));
-        return reservationRepository.findByStartDateBetween(startDate, endDate, pageRequest);
-    }*/
-    /*public Page<Reservation> getReservationsByUser(Long userId, List<ReservationStatus> statuses, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "status"));
-        return reservationRepository.findByUserIdAndStatus(userId, statuses, pageRequest);
-    }*/
     public Page<Reservation> getReservationsByUser(Long userId, ReservationsSearchFilterDTO reservationsSearchFilterDTO) {
         PageRequest pageRequest = PageRequest.of(reservationsSearchFilterDTO.getPage(), reservationsSearchFilterDTO.getSize(), Sort.by(Sort.Direction.ASC, "status"));
         return reservationRepository.searchReservationsByFilterUser(userId,

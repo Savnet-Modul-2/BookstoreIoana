@@ -12,13 +12,10 @@ public class EmailService {
     private JavaMailSender mailSender;
 
     @Async
-    public void sendVerificationEmail(String to, String code){
-        SimpleMailMessage message=new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Verificare cont aplicatie Bookstore");
-        message.setText("Codul tau de verificare este: "+code);
-        mailSender.send(message);
+    public void sendVerificationEmail(String to, String code) {
+        sendEmailNotification(to, "Verification Bookstore", "Your verification code is : " + code);
     }
+
     public void sendEmailNotification(String to, String subject, String content) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);

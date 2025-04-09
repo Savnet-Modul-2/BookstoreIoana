@@ -33,7 +33,7 @@ public class SchedulerConfig {
         reservationRepository.saveAll(expiredReservations);
     }
 
-    @Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(cron = "0 0 10 * * *") //Rulează zilnic la ora 10:00
     public void flagOverdueReservations() {
         LocalDate previousDay = LocalDate.now().minusDays(1);
 

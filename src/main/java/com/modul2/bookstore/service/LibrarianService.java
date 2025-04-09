@@ -38,8 +38,9 @@ public class LibrarianService {
         emailService.sendVerificationEmail(librarian.getEmail(), librarian.getVerificationCode());
 
         Library savedLibrary = libraryRepository.save(librarian.getLibrary());
-        librarian.setLibrary(savedLibrary);
-        savedLibrary.setLibrarian(librarian);
+        //relatie one to one
+        librarian.setLibrary(savedLibrary); //setam parintele in copil
+        savedLibrary.setLibrarian(librarian); //setam si copilul in parinte
 
         return librarianRepository.save(librarian);
     }

@@ -12,6 +12,9 @@ public class ReservationMapper {
         if (reservationDTO.getUser() != null) {
             reservation.setUser(UserMapper.userDTO2User(reservationDTO.getUser()));
         }
+        if (reservationDTO.getExemplary() != null) {
+            reservation.setExemplary(ExemplaryMapper.exemplaryDto2Exemplary(reservationDTO.getExemplary()));
+        }
         return reservation;
     }
 
@@ -24,6 +27,9 @@ public class ReservationMapper {
         reservationDTO.setExemplary(ExemplaryMapper.exemplary2ExemplaryDto(reservation.getExemplary()));
         if (reservation.getUser() != null) {
             reservationDTO.setUser(UserMapper.user2UserDTO(reservation.getUser()));
+        }
+        if (reservation.getExemplary() != null) {
+            reservationDTO.setExemplary(ExemplaryMapper.exemplary2ExemplaryDto(reservation.getExemplary()));
         }
         return reservationDTO;
     }
