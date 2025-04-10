@@ -1,7 +1,11 @@
 package com.modul2.bookstore.mapper;
 
+import com.modul2.bookstore.dto.LibraryDTO;
 import com.modul2.bookstore.dto.UserDTO;
+import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.entities.User;
+
+import java.util.List;
 
 public class UserMapper {
     public static User userDTO2User(UserDTO userDTO) {
@@ -34,6 +38,12 @@ public class UserMapper {
         userDTO.setVerifiedAccount(user.getVerifiedAccount());
         userDTO.setVerificationCode(user.getVerificationCode());
         userDTO.setVerificationCodeExpiration(user.getVerificationCodeExpiration());
+        if (user.getLibraries() != null) {
+            List<LibraryDTO> librariesDTO = user.getLibraries().stream()
+                    .map(LibraryMapper::library2LibraryDto)
+                    .toList();
+            userDTO.setLibraryDTOS(librariesDTO);
+        }
         return userDTO;
     }
 }

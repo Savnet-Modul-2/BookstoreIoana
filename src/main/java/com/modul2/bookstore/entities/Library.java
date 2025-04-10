@@ -34,6 +34,9 @@ public class Library {
             mappedBy = "library")
     private List<Book> books = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "libraries")
+    private List<User> users = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -86,8 +89,21 @@ public class Library {
         this.books.add(book);
         book.setLibrary(this);
     }
-    public void removeBook(Book book){
+
+    public void removeBook(Book book) {
         this.books.remove(book);
         book.setLibrary(null);
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user) {
+        this.users.add(user);
     }
 }
