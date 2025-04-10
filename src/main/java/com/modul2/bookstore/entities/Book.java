@@ -3,6 +3,7 @@ package com.modul2.bookstore.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,6 +26,8 @@ public class Book {
     private Category category;
     @Column(name = "LANGUAGE")
     private String language;
+    @Column(name = "MEDIE")
+    private Double medie;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "library_id")
     private Library library;
@@ -33,6 +36,12 @@ public class Book {
             orphanRemoval = true,
             mappedBy = "book")
     private List<Exemplary> exemplars;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "book")
+    private List<Review> reviews = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -105,9 +114,33 @@ public class Book {
     public void setExemplars(List<Exemplary> exemplars) {
         this.exemplars = exemplars;
     }
+
     public void addExemplary(Exemplary exemplary) {
         exemplars.add(exemplary);
         exemplary.setBook(this);
     }
 
+    public void setNrOfPages(Integer nrOfPages) {
+        this.nrOfPages = nrOfPages;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+
+    public Double getMedie() {
+        return medie;
+    }
+
+    public void setMedie(Double medie) {
+        this.medie = medie;
+    }
 }

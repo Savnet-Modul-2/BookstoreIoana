@@ -48,6 +48,20 @@ public class User {
             mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "library_id")
+    )
+    private List<Library> libraries = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -152,5 +166,34 @@ public class User {
     public void removeReservation(Reservation reservation) {
         this.reservations.remove(reservation);
         reservation.setUser(null);
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public List<Library> getLibraries() {
+        return libraries;
+    }
+
+    public void setLibraries(List<Library> libraries) {
+        this.libraries = libraries;
+    }
+
+    public void addLibrary(Library library) {
+        this.libraries.add(library);
+    }
+
+    public void removeLibrary(Library library) {
+        this.libraries.remove(library);
+        library.getUsers().remove(this);
+    }
+
+    public void addReview(Review review){
+        this.reviews.add(review);
     }
 }

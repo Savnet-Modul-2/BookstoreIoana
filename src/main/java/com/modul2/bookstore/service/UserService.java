@@ -1,12 +1,16 @@
 package com.modul2.bookstore.service;
 
+import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
 import com.modul2.bookstore.exceptions.PasswordNotRecognized;
+import com.modul2.bookstore.repository.LibraryRepository;
 import com.modul2.bookstore.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +24,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private LibraryRepository libraryRepository;
 //Metodele din service primesc entities ca parametrii
 
     public User create(User user) {
@@ -90,4 +96,27 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
+    public User addLibraryToUsersFavorites(Long userId, Long libraryId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist"));
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(() -> new EntityNotFoundException("This library doesn't exist"));
+        user.addLibrary(library);
+        library.addUser(user);
+        libraryRepository.save(library);
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public void removeLibraryFromUsersFavorites(Long userId, Long libraryId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("This user doesn't exist"));
+        Library library = libraryRepository.findById(libraryId)
+                .orElseThrow(() -> new EntityNotFoundException("This library doesn't exist"));
+        user.removeLibrary(library);
+
+        userRepository.save(user);
+        libraryRepository.save(library);
+    }
 }

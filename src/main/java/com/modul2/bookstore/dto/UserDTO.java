@@ -1,9 +1,11 @@
 package com.modul2.bookstore.dto;
 
 import com.modul2.bookstore.dto.validation.*;
+import com.modul2.bookstore.entities.Library;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UserDTO {
     private Long id;
@@ -26,7 +28,7 @@ public class UserDTO {
     private Boolean verifiedAccount = false;
     private String verificationCode;
     private LocalDateTime verificationCodeExpiration;
-
+    private List<LibraryDTO> libraryDTOS;
 
     public Long getId() {
         return id;
@@ -123,5 +125,13 @@ public class UserDTO {
 
     public void setVerificationCodeExpiration(LocalDateTime verificationCodeExpiration) {
         this.verificationCodeExpiration = verificationCodeExpiration;
+    }
+
+    public List<LibraryDTO> getLibraryDTOS() {
+        return libraryDTOS;
+    }
+
+    public void setLibraryDTOS(List<LibraryDTO> libraryDTOS) {
+        this.libraryDTOS = libraryDTOS;
     }
 }

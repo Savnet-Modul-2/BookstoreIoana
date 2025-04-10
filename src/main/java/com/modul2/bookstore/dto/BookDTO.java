@@ -21,6 +21,7 @@ public class BookDTO {
     private int nrOfPages;
     private Category category;
     private String language;
+    private Double medie;
     private LibraryDTO libraryDTO;
 
     public Long getId() {
@@ -85,5 +86,13 @@ public class BookDTO {
 
     public void setLibraryDTO(LibraryDTO libraryDTO) {
         this.libraryDTO = libraryDTO;
+    }
+
+    public Double getMedie() {
+        return medie;
+    }
+
+    public void setMedie(Double medie) {
+        this.medie = medie;
     }
 }

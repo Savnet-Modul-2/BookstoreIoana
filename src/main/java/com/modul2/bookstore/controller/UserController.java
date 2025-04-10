@@ -1,13 +1,20 @@
 package com.modul2.bookstore.controller;
 
+import com.modul2.bookstore.dto.LibraryDTO;
 import com.modul2.bookstore.dto.UserDTO;
 import com.modul2.bookstore.dto.validation.ValidationOrder;
+import com.modul2.bookstore.entities.Library;
 import com.modul2.bookstore.entities.User;
 import com.modul2.bookstore.exceptions.AccountNotVerifiedException;
+import com.modul2.bookstore.mapper.LibraryMapper;
 import com.modul2.bookstore.mapper.UserMapper;
+import com.modul2.bookstore.repository.LibraryRepository;
 import com.modul2.bookstore.repository.UserRepository;
+import com.modul2.bookstore.service.LibraryService;
 import com.modul2.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +26,9 @@ public class UserController {
     UserService userService;
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    LibraryRepository libraryRepository;
 
     //1.Primim dto ca parametru
 //2.Convertim din dto in entity
@@ -53,4 +63,28 @@ public class UserController {
         User loggedinUser = userService.login(userToLogin.getEmail(), userToLogin.getPassword());
         return ResponseEntity.ok(UserMapper.user2UserDTO(loggedinUser));
     }
+
+    @PostMapping("/add/{libraryId}/to/{userId}/favorites")
+    public ResponseEntity<?> addLibraryToUsersFavorites(@PathVariable Long libraryId,
+                                                        @PathVariable Long userId) {
+        User user = userService.addLibraryToUsersFavorites(userId, libraryId);
+        return ResponseEntity.ok(UserMapper.user2UserDTO(user));
+    }
+
+    @PutMapping("/remove/{libraryId}/from/{userId}/favorites")
+    public ResponseEntity<?> removeLibraryFromUsersFavorites(@PathVariable Long libraryId,
+                                                             @PathVariable Long userId) {
+        userService.removeLibraryFromUsersFavorites(userId, libraryId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/favorites/{userId}")
+    public ResponseEntity<?> paginatedFavoriteLibraries(@PathVariable Long userId,
+                                                        @RequestParam(required = false) Integer page,
+                                                        @RequestParam(required = false) Integer size) {
+        Page<Library> libraries = libraryRepository.getLibrariesByUserId(userId, PageRequest.of(page,size));
+        Page<LibraryDTO> libraryDTOS = libraries.map(LibraryMapper::library2LibraryDto);
+        return ResponseEntity.ok(libraryDTOS);
+    }
+
 }
